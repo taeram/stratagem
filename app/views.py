@@ -150,7 +150,7 @@ def spam_list(api_key):
         abort(403)
 
     addresses = db.session.query(Address).\
-                order_by(db.desc(Address.created)).\
+                order_by(db.desc(Address.date_last_received)).\
                 all()
 
     return render_template('list.html', addresses=addresses, api_key=api_key)
