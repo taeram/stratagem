@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block title %}Email Address Statistics{% endblock %}
+
+{% block body %}
+
+    <table class="table table-striped">
+        {% if addresses|length > 1 %}
+        <caption>{{ addresses|length }} Email Addresses</caption>
+        {% endif %}
+        <colgroup>
+            <col style="width: 200px"/>
+            <col />
+            <col style="width: 100px"/>
+            <col style="width: 200px"/>
+            <col style="width: 50px"/>
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Date of Last Email</th>
+                <th>Email Address</th>
+                <th>Total Emails</th>
+                <th>Average Spam Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for address in addresses %}
+                <tr>
+                    <td>{{ address.date_last_received.strftime('%B %d, %Y %H:%M') }}</td>
+                    <td>{{ address.local }}@{{ address.domain.name }}</td>
+                    <td>{{ address.total_received|number_format }}</td>
+                    <td>{{ (address.total_spam_score / address.total_received)|round }}</td>
+                    <td>
+                        <button class="btn btn-danger btn-delete" data-url="{{ url_for('address_item', address_id=address.id) }}"><i class="fa fa-trash-o"></i></button>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="999" style="text-align: center">
+                        No email addresses found
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(function() {
+            var API_KEY="{{ config['API_KEY'] }}";
+
+            // Reload every 5 minutes
+            setTimeout(function () { window.location.reload(); }, 300000);
+
+            // Delete an address
+            $('.btn-delete').on('click', function () {
+                var url = window.location.origin + $(this).data('url');
+                var self = this;
+                $.ajax({
+                    url: url,
+                    headers: {
+                        'Authorization': API_KEY
+                    },
+                    type: 'DELETE'
+                }).done(function() {
+                    $(self).parents('tr').remove();
+                });
+            });
+        });
+    </script>
+{% endblock %}
