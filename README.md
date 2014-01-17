@@ -161,7 +161,7 @@ curl -X DELETE http://your-domain.com/address/3 -H "Authorization: secret_api_ke
 If you have existing email addresses you don't want to convert to the new format,
 you can whitelist a specific email address by:
 ```bash
-curl http://your-domain.com/address/ -H "Authorization: secret_api_key"  -F "email=bill@example.com&destination=me@example.com"
+curl http://your-domain.com/whitelist/ -H "Authorization: secret_api_key"  -F "email=bill@example.com&destination=me@example.com"
 
 # Response
 {
