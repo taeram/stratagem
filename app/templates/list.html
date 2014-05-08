@@ -29,7 +29,7 @@
                     <td>{{ address.date_last_received.strftime('%B %d, %Y %H:%M') }}</td>
                     <td>{{ address.local }}@{{ address.domain.name }}</td>
                     <td>{{ address.total_received|number_format }}</td>
-                    <td>{{ (address.total_spam_score / address.total_received)|round }}</td>
+                    <td>{% if address.total_received > 0 %} {{ (address.total_spam_score / address.total_received)|round }} {% else %} 0 {% endif %}</td>
                     <td>
                         <button class="btn btn-danger btn-delete" data-url="{{ url_for('address_item', address_id=address.id) }}"><i class="fa fa-trash-o"></i></button>
                     </td>
