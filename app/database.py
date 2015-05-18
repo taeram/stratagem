@@ -1,5 +1,6 @@
 from app import app
 from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy.dialects.mysql import VARCHAR
 from flask.ext.script import Manager, prompt_bool
 from datetime import datetime
 
@@ -31,7 +32,7 @@ class Domain(db.Model):
     __tablename__ = 'domain'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text(length=255), unique=True)
+    name = db.Column(VARCHAR(255), unique=True)
 
     def __init__(self, name):
         self.name = name
