@@ -31,7 +31,7 @@ class Domain(db.Model):
     __tablename__ = 'domain'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text, unique=True)
+    name = db.Column(db.Text(length=255), unique=True)
 
     def __init__(self, name):
         self.name = name
