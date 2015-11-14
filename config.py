@@ -1,4 +1,6 @@
-from os import getenv
+from os import getenv, path
+
+APP_DIR = path.dirname(path.realpath(__file__))
 
 class Config(object):
     DEBUG = False
@@ -8,6 +10,7 @@ class Config(object):
     MAILGUN_API_URL = "https://api.mailgun.net/v2"
     MAILGUN_API_KEY = getenv('MAILGUN_API_KEY')
     LOCAL_PART_HASH_LENGTH = 8
+    LOG_DIR = '%s/logs' % APP_DIR
 
 class ProductionConfig(Config):
     DEBUG = False

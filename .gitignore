@@ -49,3 +49,6 @@ Vagrantfile
 # SQLite
 *.db
 *.db-journal
+
+# Application
+/logs/
