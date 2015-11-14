@@ -62,13 +62,19 @@ class Address(db.Model):
         self.local = local
         self.domain_id = domain_id
 
+    def get_average_spam_score(self):
+        if self.total_spam_score > 0:
+            return  self.total_spam_score / self.total_received
+        else:
+            return 0
+
     def toObject(self):
         return {
             "id": self.id,
             "local": self.local,
             "domain": self.domain.name,
             "created": self.created.strftime('%Y-%m-%d %H:%M:%S'),
-            "avg_spam_score": self.total_spam_score / self.total_received,
+            "avg_spam_score": self.get_average_spam_score(),
             "date_last_received": self.date_last_received.strftime('%Y-%m-%d %H:%M:%S'),
             "total_received": self.total_received
         }
