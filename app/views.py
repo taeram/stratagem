@@ -12,6 +12,10 @@ from mailgun import mailgun_explicit_whitelist
 import json
 from datetime import datetime
 
+@app.route('/.well-known/acme-challenge/<filename>')
+def letsencrypt(filename):
+    return send_from_directory(os.path.join(app.root_path, '../.well-known/acme-challenge/'), filename)
+
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.png', mimetype='image/png')
