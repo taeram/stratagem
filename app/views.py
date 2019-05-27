@@ -1,6 +1,7 @@
 from app import app
 import os
-from flask import render_template, \
+from flask import abort, \
+                  render_template, \
                   request, \
                   send_from_directory
 from helpers import is_authenticated, \
@@ -11,10 +12,6 @@ from database import db, \
 from mailgun import mailgun_explicit_whitelist
 import json
 from datetime import datetime
-
-@app.route('/.well-known/acme-challenge/<filename>')
-def letsencrypt(filename):
-    return send_from_directory(os.path.join(app.root_path, '../.well-known/acme-challenge/'), filename)
 
 @app.route('/favicon.ico')
 def favicon():
