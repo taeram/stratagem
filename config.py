@@ -10,7 +10,6 @@ class Config(object):
     MAILGUN_API_URL = "https://api.mailgun.net/v2"
     MAILGUN_API_KEY = getenv('MAILGUN_API_KEY')
     LOCAL_PART_HASH_LENGTH = 8
-    LOG_DIR = '%s/logs' % APP_DIR
 
 class ProductionConfig(Config):
     DEBUG = False
@@ -19,6 +18,3 @@ class ProductionConfig(Config):
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///app.db'
-
-class TestingConfig(Config):
-    TESTING = True

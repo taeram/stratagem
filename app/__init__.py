@@ -1,4 +1,5 @@
 import os
+import sys
 from flask import Flask
 
 app = Flask(__name__)
@@ -10,10 +11,9 @@ else:
     app.config.from_object('config.DevelopmentConfig')
 
 import logging
-from logging import FileHandler
-file_handler = FileHandler(filename="%s/stratagem.log" % app.config['LOG_DIR'])
-file_handler.setLevel(logging.WARNING)
-app.logger.addHandler(file_handler)
+log_handler = logging.StreamHandler(sys.stdout)
+log_handler.setLevel(logging.WARNING)
+app.logger.addHandler(log_handler)
 
 import filters
 import views

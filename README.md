@@ -22,11 +22,8 @@ Requirements
 ============
 You'll need the following:
 
-* A [Heroku](https://www.heroku.com/) account, if you want to deploy to Heroku.
-* A [Mailgun](http://mailgun.com) account
-* [Python 2.7.3](http://www.python.org/)
-* [pip](https://github.com/pypa/pip)
-* [Virtualenv](https://github.com/pypa/virtualenv)
+* [Docker](https://docker.com)
+* [Python 2.7](http://www.python.org/)
 
 Mailgun Setup
 =============
@@ -61,37 +58,25 @@ Local development setup:
     API_KEY="secret_api_key" MAILGUN_API_KEY="key-abcd1234" python server.py
 ```
 
-Heroku setup:
+Docker setup:
 ```bash
-    # Clone the repo
-    git clone git@github.com:taeram/stratagem.git
-    cd ./stratagem
+    # Create the production database and the initial Mailgun routes
+    docker run \
+        --interactive \
+        --tty \
+        --env DATABASE_URL="mysql://user:password@localhost/stratagem" \
+        --env FLASK_ENV="production" \
+        taeram/stratagem \
+        bash -c "python ./app/database.py create && python manage.py mailgun setup"
 
-    # Create your Heroku app, and add a database addon
-    heroku apps:create
-    heroku addons:add heroku-postgresql
-
-    # Promote your postgres database (your URL name may differ)
-    heroku pg:promote HEROKU_POSTGRESQL_RED_URL
-
-    # Set an "API key" for authorization
-    heroku config:set API_KEY="secret_api_key"
-
-    # Get your API Key from your Mailgun account
-    heroku config:set MAILGUN_API_KEY="key-abcd1234"
-
-    # Set the flask environment
-    heroku config:set FLASK_ENV=production
-
-    # Push to Heroku
-    git push heroku master
-
-    # Create the production database
-    heroku run python manage.py database create
-
-    # Create the initial Mailgun routes
-    #   - This step should be run once per catch-all domain name
-    heroku run python manage.py mailgun setup
+    # Run the application
+    docker run \
+        --publish 8080:80 \
+        --env API_KEY="foo" \
+        --env DATABASE_URL="mysql://user:password@localhost/stratagem" \
+        --env FLASK_ENV="production" \
+        --env MAILGUN_API_KEY="foo" \
+        taeram/stratagem
 ```
 
 Usage
