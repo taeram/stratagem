@@ -7,6 +7,7 @@ class Config(object):
     TESTING = False
     API_KEY = getenv('API_KEY')
     SQLALCHEMY_DATABASE_URI = getenv('DATABASE_URL').replace('mysql2:', 'mysql:')
+    SQLALCHEMY_POOL_RECYCLE = 60
     MAILGUN_API_URL = "https://api.mailgun.net/v2"
     MAILGUN_API_KEY = getenv('MAILGUN_API_KEY')
     LOCAL_PART_HASH_LENGTH = 8
